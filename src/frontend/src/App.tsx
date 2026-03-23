@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   CheckCircle2,
-  ChevronRight,
   ClipboardCheck,
   FileText,
   Handshake,
@@ -185,7 +184,7 @@ function Header() {
             data-ocid="nav.primary_button"
             className="rounded-full px-5 bg-black hover:bg-black/90 text-white font-semibold text-sm"
           >
-            Get Started
+            Contact Us
           </Button>
         </div>
       </div>
@@ -239,14 +238,6 @@ function HeroSection() {
                   onClick={() => scrollTo("contact")}
                   data-ocid="hero.primary_button"
                   className="rounded-full px-7 py-3 bg-white text-black font-bold hover:bg-gray-100 transition-colors shadow-lg"
-                >
-                  Get Started <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-                <Button
-                  onClick={() => scrollTo("contact")}
-                  data-ocid="hero.secondary_button"
-                  variant="outline"
-                  className="rounded-full px-7 py-3 border-white/60 text-white hover:bg-white/10 bg-transparent font-semibold"
                 >
                   Contact Us
                 </Button>
