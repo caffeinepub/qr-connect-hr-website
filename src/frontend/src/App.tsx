@@ -5,11 +5,11 @@ import { Toaster } from "@/components/ui/sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
+  BriefcaseBusiness,
   CheckCircle2,
   ClipboardCheck,
   FileText,
   Handshake,
-  Loader2,
   Mail,
   MapPin,
   Phone,
@@ -18,12 +18,11 @@ import {
   Target,
   UserSearch,
   Users,
-  X,
 } from "lucide-react";
 import { motion } from "motion/react";
+import type React from "react";
 import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
-import { useSubmitContactForm } from "./hooks/useQueries";
+import { toast as _toast } from "sonner";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +61,11 @@ const SERVICES = [
     title: "HR Audit & Gap Analysis",
     desc: "Comprehensive HR audits to identify gaps, mitigate risk, and align your HR practices with industry standards and legal requirements.",
   },
+  {
+    icon: BriefcaseBusiness,
+    title: "Off-Roll Manpower Services",
+    desc: "Flexible off-roll staffing solutions to help you scale your workforce efficiently, reduce compliance burden, and manage project-based or temporary manpower with complete statutory and payroll support.",
+  },
 ];
 
 const VALUES = [
@@ -88,8 +92,8 @@ const VALUES = [
 ];
 
 const TEAM = [
-  { name: "Farukh Hussain", role: "Founder & CEO", initials: "FH" },
-  { name: "S. Khan", role: "Chief Operating Officer", initials: "SK" },
+  { name: "Samad Khan", role: "Chief Executive Officer", initials: "SK" },
+  { name: "Sankalp Mehra", role: "Chief Operating Officer", initials: "SM" },
 ];
 
 function Header() {
@@ -168,8 +172,8 @@ function Header() {
               data-ocid="nav.link"
               className={`px-2.5 sm:px-3.5 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
                 activeSection === link.href.replace("#", "")
-                  ? "text-black bg-black/10"
-                  : "text-foreground/70 hover:text-black hover:bg-black/10"
+                  ? "text-primary bg-primary/10"
+                  : "text-foreground/70 hover:text-primary hover:bg-primary/10"
               }`}
             >
               {link.label}
@@ -182,7 +186,7 @@ function Header() {
           <Button
             onClick={() => scrollTo("#contact")}
             data-ocid="nav.primary_button"
-            className="rounded-full px-5 bg-black hover:bg-black/90 text-white font-semibold text-sm"
+            className="rounded-full px-5 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-sm"
           >
             Contact Us
           </Button>
@@ -208,7 +212,7 @@ function HeroSection() {
           className="rounded-2xl overflow-hidden"
           style={{
             background:
-              "linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #1a1a1a 100%)",
+              "linear-gradient(135deg, #111111 0%, #1a1a1a 50%, #0d0d0d 100%)",
             minHeight: "460px",
             border: "1px solid rgba(255,255,255,0.08)",
           }}
@@ -224,7 +228,7 @@ function HeroSection() {
               </div>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white mb-5">
                 Your Trusted Partner in{" "}
-                <span className="text-gray-300">
+                <span style={{ color: "#ffffff" }}>
                   HR Services &amp; Consulting
                 </span>
               </h1>
@@ -237,7 +241,7 @@ function HeroSection() {
                 <Button
                   onClick={() => scrollTo("contact")}
                   data-ocid="hero.primary_button"
-                  className="rounded-full px-7 py-3 bg-white text-black font-bold hover:bg-gray-100 transition-colors shadow-lg"
+                  className="rounded-full px-7 py-3 bg-white text-primary font-bold hover:bg-gray-100 transition-colors shadow-lg"
                 >
                   Contact Us
                 </Button>
@@ -272,7 +276,7 @@ function HeroSection() {
               key={stat.label}
               className="bg-card rounded-xl px-6 py-4 shadow-card text-center border border-border"
             >
-              <p className="text-2xl font-bold text-black">{stat.value}</p>
+              <p className="text-2xl font-bold text-primary">{stat.value}</p>
               <p className="text-xs text-muted-foreground mt-0.5 font-medium">
                 {stat.label}
               </p>
@@ -310,14 +314,14 @@ function AboutSection() {
         >
           {/* Text */}
           <div className="flex-1">
-            <div className="inline-flex items-center gap-2 bg-black/[0.06] rounded-full px-4 py-1.5 mb-4">
-              <span className="text-xs font-semibold text-foreground/60 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 bg-primary/[0.08] rounded-full px-4 py-1.5 mb-4">
+              <span className="text-xs font-semibold text-primary/80 uppercase tracking-wider">
                 About QR Connect
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-5 leading-tight">
               Empowering Businesses Through{" "}
-              <span className="text-foreground/60">Smart HR Solutions</span>
+              <span className="text-primary/60">Smart HR Solutions</span>
             </h2>
             <p className="text-foreground/70 leading-relaxed mb-4">
               QR Connect is a leading provider of HR services, committed to
@@ -341,7 +345,7 @@ function AboutSection() {
               ].map((tag) => (
                 <span
                   key={tag}
-                  className="bg-black/[0.06] text-foreground text-xs font-semibold px-4 py-1.5 rounded-full border border-border"
+                  className="bg-primary/[0.08] text-primary text-xs font-semibold px-4 py-1.5 rounded-full border border-primary/20"
                 >
                   {tag}
                 </span>
@@ -363,13 +367,14 @@ function AboutSection() {
                     <span className="text-sm font-medium text-foreground/80">
                       {item.label}
                     </span>
-                    <span className="text-sm font-bold text-foreground">
+                    <span className="text-sm font-bold text-primary">
                       {item.pct}%
                     </span>
                   </div>
                   <div className="h-2 bg-muted rounded-full overflow-hidden">
                     <motion.div
-                      className="h-full bg-black rounded-full"
+                      className="h-full rounded-full"
+                      style={{ background: "oklch(0.15 0 0)" }}
                       initial={{ width: 0 }}
                       animate={visible ? { width: `${item.pct}%` } : {}}
                       transition={{ duration: 0.8, delay: 0.2 }}
@@ -378,7 +383,7 @@ function AboutSection() {
                 </div>
               ))}
               <div className="pt-4 border-t border-border flex items-center gap-3">
-                <MapPin className="w-4 h-4 text-foreground flex-shrink-0" />
+                <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
                 <span className="text-sm text-foreground/70">
                   Noida, Uttar Pradesh, India
                 </span>
@@ -409,8 +414,8 @@ function ServicesSection() {
     <section id="services" className="py-20">
       <div className="max-w-6xl mx-auto px-6" ref={ref}>
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-black/[0.06] rounded-full px-4 py-1.5 mb-4">
-            <span className="text-xs font-semibold text-foreground/60 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 bg-primary/[0.08] rounded-full px-4 py-1.5 mb-4">
+            <span className="text-xs font-semibold text-primary/80 uppercase tracking-wider">
               What We Offer
             </span>
           </div>
@@ -433,8 +438,8 @@ function ServicesSection() {
               className="bg-card rounded-xl border border-border shadow-card hover:shadow-card-hover transition-all duration-300 p-6 group hover:-translate-y-1"
               data-ocid={`services.item.${i + 1}`}
             >
-              <div className="w-12 h-12 rounded-xl bg-black/[0.08] flex items-center justify-center mb-4 group-hover:bg-black/[0.12] transition-colors">
-                <svc.icon className="w-6 h-6 text-foreground" />
+              <div className="w-12 h-12 rounded-xl bg-primary/[0.08] flex items-center justify-center mb-4 group-hover:bg-primary/[0.14] transition-colors">
+                <svc.icon className="w-6 h-6 text-primary" />
               </div>
               <h3 className="font-bold text-foreground text-base mb-2">
                 {svc.title}
@@ -470,11 +475,11 @@ function HRImagesSection() {
       label: "Recruitment Excellence",
     },
     {
-      src: "/assets/generated/hr-payroll.dim_800x600.jpg",
+      src: "/assets/generated/compliance-management.dim_1200x800.jpg",
       label: "Compliance Management",
     },
     {
-      src: "/assets/generated/hr-payroll.dim_800x600.jpg",
+      src: "/assets/generated/payroll-management.dim_1200x800.jpg",
       label: "Payroll Management",
     },
   ];
@@ -483,8 +488,8 @@ function HRImagesSection() {
     <section className="bg-section-blue py-20">
       <div className="max-w-6xl mx-auto px-6" ref={ref}>
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-black/[0.06] rounded-full px-4 py-1.5 mb-4">
-            <span className="text-xs font-semibold text-foreground/60 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 bg-primary/[0.08] rounded-full px-4 py-1.5 mb-4">
+            <span className="text-xs font-semibold text-primary/80 uppercase tracking-wider">
               Our Expertise
             </span>
           </div>
@@ -581,8 +586,8 @@ function VisionMissionValues() {
     <section id="vision" className="py-20">
       <div className="max-w-6xl mx-auto px-6" ref={ref}>
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-black/[0.06] rounded-full px-4 py-1.5 mb-4">
-            <span className="text-xs font-semibold text-foreground/60 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 bg-primary/[0.08] rounded-full px-4 py-1.5 mb-4">
+            <span className="text-xs font-semibold text-primary/80 uppercase tracking-wider">
               What Drives Us
             </span>
           </div>
@@ -600,8 +605,8 @@ function VisionMissionValues() {
         >
           {/* Vision */}
           <div className="bg-card rounded-xl border border-border shadow-card p-7">
-            <div className="w-11 h-11 rounded-xl bg-black/[0.08] flex items-center justify-center mb-4">
-              <Rocket className="w-5 h-5 text-foreground" />
+            <div className="w-11 h-11 rounded-xl bg-primary/[0.08] flex items-center justify-center mb-4">
+              <Rocket className="w-5 h-5 text-primary" />
             </div>
             <h3 className="text-xl font-bold text-foreground mb-3">
               Our Vision
@@ -617,8 +622,8 @@ function VisionMissionValues() {
 
           {/* Mission */}
           <div className="bg-card rounded-xl border border-border shadow-card p-7">
-            <div className="w-11 h-11 rounded-xl bg-black/[0.08] flex items-center justify-center mb-4">
-              <Target className="w-5 h-5 text-foreground" />
+            <div className="w-11 h-11 rounded-xl bg-secondary/[0.12] flex items-center justify-center mb-4">
+              <Target className="w-5 h-5 text-secondary" />
             </div>
             <h3 className="text-xl font-bold text-foreground mb-3">
               Our Mission
@@ -626,7 +631,7 @@ function VisionMissionValues() {
             <ul className="space-y-2.5">
               {MISSION_BULLETS.map((bullet) => (
                 <li key={bullet} className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-foreground mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-secondary mt-0.5 flex-shrink-0" />
                   <span className="text-sm text-foreground/70">{bullet}</span>
                 </li>
               ))}
@@ -645,9 +650,14 @@ function VisionMissionValues() {
               className="bg-card rounded-xl border border-border shadow-card p-6 relative overflow-hidden group hover:shadow-card-hover transition-all"
               data-ocid={`values.item.${i + 1}`}
             >
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-black/20 rounded-b-xl" />
-              <div className="w-10 h-10 rounded-lg bg-black/[0.08] flex items-center justify-center mb-3 group-hover:bg-black/[0.12] transition-colors">
-                <val.icon className="w-5 h-5 text-foreground" />
+              <div
+                className="absolute bottom-0 left-0 right-0 h-0.5 rounded-b-xl"
+                style={{
+                  background: "oklch(0.15 0 0)",
+                }}
+              />
+              <div className="w-10 h-10 rounded-lg bg-primary/[0.08] flex items-center justify-center mb-3 group-hover:bg-primary/[0.14] transition-colors">
+                <val.icon className="w-5 h-5 text-primary" />
               </div>
               <h4 className="font-bold text-foreground text-sm mb-2">
                 {val.title}
@@ -677,17 +687,14 @@ function TeamSection() {
     return () => obs.disconnect();
   }, []);
 
-  const BG_COLORS = [
-    "from-zinc-600 to-zinc-800",
-    "from-neutral-500 to-neutral-700",
-  ];
+  const BG_COLORS = ["from-gray-700 to-gray-900", "from-gray-600 to-gray-800"];
 
   return (
     <section id="team" className="bg-section-blue py-20">
       <div className="max-w-6xl mx-auto px-6" ref={ref}>
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-black/[0.06] rounded-full px-4 py-1.5 mb-4">
-            <span className="text-xs font-semibold text-foreground/60 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 bg-primary/[0.08] rounded-full px-4 py-1.5 mb-4">
+            <span className="text-xs font-semibold text-primary/80 uppercase tracking-wider">
               Our People
             </span>
           </div>
@@ -721,19 +728,16 @@ function TeamSection() {
                 <h4 className="font-bold text-foreground text-lg">
                   {member.name}
                 </h4>
-                <p className="text-sm text-muted-foreground mt-1 mb-5">
+                <p className="text-sm text-muted-foreground mt-1">
                   {member.role}
                 </p>
-                <div className="flex gap-2">
-                  <div className="w-8 h-8 rounded-full bg-black/[0.08] flex items-center justify-center">
-                    <Mail className="w-4 h-4 text-foreground" />
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-black/[0.08] flex items-center justify-center">
-                    <Phone className="w-4 h-4 text-foreground" />
-                  </div>
-                </div>
               </div>
-              <div className="h-1 bg-black/[0.12]" />
+              <div
+                className="h-1"
+                style={{
+                  background: "oklch(0.15 0 0)",
+                }}
+              />
             </motion.div>
           ))}
         </div>
@@ -743,37 +747,28 @@ function TeamSection() {
 }
 
 function ContactSection() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    companyName: "",
-    message: "",
-  });
-  const { mutate, isPending, isSuccess, isError } = useSubmitContactForm();
+  const [submitted, setSubmitted] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    mutate(formData, {
-      onSuccess: () => {
-        toast.success("Message sent successfully! We'll be in touch shortly.");
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          companyName: "",
-          message: "",
-        });
-      },
-      onError: () => {
-        toast.error("Failed to send message. Please try again.");
-      },
+    const form = e.currentTarget;
+    const params = new URLSearchParams({
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+      company: (form.elements.namedItem("company") as HTMLInputElement).value,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement)
+        .value,
+    });
+    const webhookUrl =
+      "https://script.google.com/macros/s/AKfycbz2eExKx_6hAh31sm8EIEN4Z9VFuh_jNWSVxOghiaf3YUUQQPCWEZV-O8wQhUgpXSaO8g/exec";
+    fetch(`${webhookUrl}?${params.toString()}`, {
+      method: "GET",
+      mode: "no-cors",
+    }).finally(() => {
+      setSubmitted(true);
+      if (formRef.current) formRef.current.reset();
     });
   };
 
@@ -781,8 +776,8 @@ function ContactSection() {
     <section id="contact" className="py-20">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-black/[0.06] rounded-full px-4 py-1.5 mb-4">
-            <span className="text-xs font-semibold text-foreground/60 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 bg-primary/[0.08] rounded-full px-4 py-1.5 mb-4">
+            <span className="text-xs font-semibold text-primary/80 uppercase tracking-wider">
               Get In Touch
             </span>
           </div>
@@ -802,6 +797,7 @@ function ContactSection() {
               Send Us a Message
             </h3>
             <form
+              ref={formRef}
               onSubmit={handleSubmit}
               className="space-y-5"
               data-ocid="contact.panel"
@@ -818,8 +814,6 @@ function ContactSection() {
                     id="name"
                     name="name"
                     placeholder="John Doe"
-                    value={formData.name}
-                    onChange={handleChange}
                     required
                     className="border-border bg-muted text-foreground placeholder:text-foreground/40"
                     data-ocid="contact.input"
@@ -837,8 +831,6 @@ function ContactSection() {
                     name="email"
                     type="email"
                     placeholder="john@company.com"
-                    value={formData.email}
-                    onChange={handleChange}
                     required
                     className="border-border bg-muted text-foreground placeholder:text-foreground/40"
                     data-ocid="contact.input"
@@ -857,25 +849,21 @@ function ContactSection() {
                     id="phone"
                     name="phone"
                     placeholder="+91 98765 43210"
-                    value={formData.phone}
-                    onChange={handleChange}
                     className="border-border bg-muted text-foreground placeholder:text-foreground/40"
                     data-ocid="contact.input"
                   />
                 </div>
                 <div className="space-y-1.5">
                   <Label
-                    htmlFor="companyName"
+                    htmlFor="company"
                     className="text-sm font-medium text-foreground/80"
                   >
                     Company Name
                   </Label>
                   <Input
-                    id="companyName"
-                    name="companyName"
+                    id="company"
+                    name="company"
                     placeholder="Your Company Ltd."
-                    value={formData.companyName}
-                    onChange={handleChange}
                     className="border-border bg-muted text-foreground placeholder:text-foreground/40"
                     data-ocid="contact.input"
                   />
@@ -893,52 +881,30 @@ function ContactSection() {
                   name="message"
                   placeholder="Tell us about your HR requirements..."
                   rows={4}
-                  value={formData.message}
-                  onChange={handleChange}
                   required
                   className="border-border bg-muted text-foreground placeholder:text-foreground/40 resize-none"
                   data-ocid="contact.textarea"
                 />
               </div>
 
-              {isSuccess && (
+              {submitted && (
                 <div
-                  className="flex items-center gap-2 p-3 bg-black/[0.06] border border-black/20 rounded-lg"
+                  className="flex items-center gap-2 p-3 bg-secondary/[0.08] border border-secondary/30 rounded-lg"
                   data-ocid="contact.success_state"
                 >
-                  <CheckCircle2 className="w-4 h-4 text-foreground" />
+                  <CheckCircle2 className="w-4 h-4 text-secondary" />
                   <span className="text-sm text-foreground font-medium">
-                    Message sent successfully!
-                  </span>
-                </div>
-              )}
-
-              {isError && (
-                <div
-                  className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded-lg"
-                  data-ocid="contact.error_state"
-                >
-                  <X className="w-4 h-4 text-red-600" />
-                  <span className="text-sm text-red-600 font-medium">
-                    Failed to send. Please try again.
+                    Thank you! We will contact you shortly
                   </span>
                 </div>
               )}
 
               <Button
                 type="submit"
-                disabled={isPending}
-                className="w-full rounded-full bg-black hover:bg-black/90 text-white font-bold py-3 text-sm"
+                className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 text-sm"
                 data-ocid="contact.submit_button"
               >
-                {isPending ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  "Send Message"
-                )}
+                Send Message
               </Button>
             </form>
           </div>
@@ -951,8 +917,8 @@ function ContactSection() {
               </h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-black/[0.08] flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-foreground" />
+                  <div className="w-10 h-10 rounded-xl bg-primary/[0.08] flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-foreground">
@@ -964,8 +930,8 @@ function ContactSection() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-black/[0.08] flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-5 h-5 text-foreground" />
+                  <div className="w-10 h-10 rounded-xl bg-primary/[0.08] flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-foreground">
@@ -977,8 +943,8 @@ function ContactSection() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-black/[0.08] flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-5 h-5 text-foreground" />
+                  <div className="w-10 h-10 rounded-xl bg-primary/[0.08] flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-foreground">
