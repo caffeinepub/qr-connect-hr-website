@@ -1,0 +1,15 @@
+type Time = int;
+type Submission = 
+ record {
+   companyName: text;
+   email: text;
+   message: text;
+   name: text;
+   phone: text;
+   timestamp: Time;
+ };
+service : {
+  getAllSubmissions: () -> (vec Submission);
+  submitContactForm: (name: text, email: text, phone: text, companyName:
+   text, message: text) -> ();
+}
