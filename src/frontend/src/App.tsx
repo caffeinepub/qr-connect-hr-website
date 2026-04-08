@@ -250,7 +250,7 @@ function HeroSection() {
             {/* Hero Image */}
             <div className="flex-shrink-0 lg:w-[420px] w-full flex items-center justify-center">
               <img
-                src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&h=700&fit=crop&crop=focalpoint&auto=format&q=80"
+                src="/assets/images/hr-team-meeting.jpg"
                 alt="HR Team Meeting"
                 className="w-full max-w-sm lg:max-w-none object-cover rounded-xl opacity-80"
                 loading="eager"
